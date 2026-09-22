@@ -1,0 +1,41 @@
+﻿@model IEnumerable<OfficeNova.Bestelportaal.Models.Product>
+
+@{
+    ViewData["Title"] = "Producten";
+}
+
+<h1>Producten</h1>
+
+<p>
+    <a asp-action="Index" class="btn btn-primary">Alles tonen</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Naam</th>
+            <th>Categorie</th>
+            <th>Omschrijving</th>
+            <th>Prijs</th>
+            <th>Voorraad</th>
+            <th>Tags</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Naam</td>
+                <td>@product.Categorie</td>
+                <td>@product.Omschrijving</td>
+                <td>€ @product.Prijs.ToString("F2")</td>
+                <td>@product.Voorraad</td>
+                <td>@product.Tags</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@product.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,31 @@
+﻿@model OfficeNova.Bestelportaal.Models.Product
+
+@{
+    ViewData["Title"] = "Product details";
+}
+
+<h1>@Model.Naam</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Categorie</dt>
+        <dd class="col-sm-9">@Model.Categorie</dd>
+
+        <dt class="col-sm-3">Omschrijving</dt>
+        <dd class="col-sm-9">@Model.Omschrijving</dd>
+
+        <dt class="col-sm-3">Prijs</dt>
+        <dd class="col-sm-9">€ @Model.Prijs.ToString("F2")</dd>
+
+        <dt class="col-sm-3">Voorraad</dt>
+        <dd class="col-sm-9">@Model.Voorraad</dd>
+
+        <dt class="col-sm-3">Tags</dt>
+        <dd class="col-sm-9">@Model.Tags</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Index">Terug naar overzicht</a>
+</div>
