@@ -13,10 +13,38 @@ namespace OfficeNova.Bestelportaal.Controllers
             _context = context;
         }
 
-        // GET: /Products
-        public IActionResult Index()
+        // GET: /Products?zoekterm=...&categorie=...
+        public IActionResult Index(string? zoekterm, string? categorie)
         {
-            var producten = _context.Producten.ToList();
+            var query = _context.Producten.AsQueryable();
+
+            // Filter op zoekterm (naam + omschrijving)
+            if (!string.IsNullOrWhiteSpace(zoekterm))
+            {
+                query = query.Where(p =>
+                    p.Naam.Contains(zoekterm) ||
+                    p.Omschrijving.Contains(zoekterm) ||
+                    p.Tags.Contains(zoekterm));
+            }
+
+            // Filter op categorie
+            if (!string.IsNullOrWhiteSpace(categorie))
+            {
+                query = query.Where(p => p.Categorie == categorie);
+            }
+
+            // Lijst met alle categorieën voor het dropdown-menu
+            ViewBag.Categories = _context.Producten
+                .Select(p => p.Categorie)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
+
+            // Onthoud de huidige zoekterm en categorie
+            ViewBag.Zoekterm = zoekterm;
+            ViewBag.HuidigeCategorie = categorie;
+
+            var producten = query.ToList();
             return View(producten);
         }
 

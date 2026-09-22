@@ -6,36 +6,75 @@
 
 <h1>Producten</h1>
 
+<form method="get" asp-action="Index" class="mb-3">
+    <div class="row g-2">
+        <div class="col-md-5">
+            <input type="text" name="zoekterm" class="form-control"
+                   placeholder="Zoek op naam, omschrijving of tag..."
+                   value="@ViewBag.Zoekterm" />
+        </div>
+        <div class="col-md-4">
+            <select name="categorie" class="form-select">
+                <option value="">-- Alle categorieën --</option>
+                @foreach (var cat in ViewBag.Categories)
+                {
+                    if (cat == ViewBag.HuidigeCategorie)
+                    {
+                        <option value="@cat" selected>@cat</option>
+                    }
+                    else
+                    {
+                        <option value="@cat">@cat</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Zoeken</button>
+            <a asp-action="Index" class="btn btn-secondary">Reset</a>
+        </div>
+    </div>
+</form>
+
 <p>
-    <a asp-action="Index" class="btn btn-primary">Alles tonen</a>
+    <strong>@Model.Count()</strong> product(en) gevonden.
 </p>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Naam</th>
-            <th>Categorie</th>
-            <th>Omschrijving</th>
-            <th>Prijs</th>
-            <th>Voorraad</th>
-            <th>Tags</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        Geen producten gevonden voor je zoekopdracht.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>@product.Naam</td>
-                <td>@product.Categorie</td>
-                <td>@product.Omschrijving</td>
-                <td>€ @product.Prijs.ToString("F2")</td>
-                <td>@product.Voorraad</td>
-                <td>@product.Tags</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@product.Id">Details</a>
-                </td>
+                <th>Naam</th>
+                <th>Categorie</th>
+                <th>Omschrijving</th>
+                <th>Prijs</th>
+                <th>Voorraad</th>
+                <th>Tags</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Naam</td>
+                    <td>@product.Categorie</td>
+                    <td>@product.Omschrijving</td>
+                    <td>€ @product.Prijs.ToString("F2")</td>
+                    <td>@product.Voorraad</td>
+                    <td>@product.Tags</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@product.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
